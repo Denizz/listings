@@ -1,6 +1,10 @@
+# Program gets currency exchange rates using www.xe.com/currencyconverter
+# the exchange rate from one currency to another will be written to terminal
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
+
 
 class CurrencyExchange():
 
