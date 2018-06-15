@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
-class AirbnbExercise1():
+class CurrencyExchange():
 
     def test(self,curr1, curr2):
         base_url = "https://www.xe.com/currencyconverter/"
@@ -12,7 +12,6 @@ class AirbnbExercise1():
         driver.get(base_url)
         driver.implicitly_wait(10)
 
-        # Elements and design has changed on Airbnb website after the lecture was made
         from_curr = driver.find_element(By.ID, "from")
         from_curr.send_keys(curr1)
         time.sleep(2)
@@ -31,5 +30,5 @@ class AirbnbExercise1():
         print(str(checkin))
         driver.close()
 
-ff = AirbnbExercise1()
-ff.test("TRY","RUB")
+ff = CurrencyExchange()
+ff.test("EUR","TRY")
