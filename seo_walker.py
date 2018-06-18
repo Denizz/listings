@@ -7,37 +7,52 @@ import time
 
 
 class SeoWalker():
+
     def walk(self, url, amount):
+
         base_url = url
-        driver = webdriver.Firefox()
+        self.driver = webdriver.Firefox()
         # driver = webdriver.Chrome()
-        driver.maximize_window()
-        driver.get(base_url)
-        driver.implicitly_wait(10)
-
-        # с помощью цикла сделать поиск линков amount раз и сделать переход на них. Потом передать линк в write_to_file(link)
-        a_links = driver.find_elements_by_xpath("//a[contains(@href,'"+url+"')] ")
+        self.driver.maximize_window()
+        self.driver.get(base_url)
+        self.driver.implicitly_wait(10)
+        a_links = self.driver.find_elements_by_xpath("//a[contains(@href,'"+url+"')] ")
         links_to_write = []
-        for i in range (0, len(a_links)):
-            if len(str(a_links[i].get_attribute("href"))) > len(base_url) + 3:
-                links_to_write.append(str(a_links[i].get_attribute("href")))
-                #print("link " + str(a_links[i].get_attribute("href")))
 
-            if len(links_to_write) == 5:
+        for i in range (0, len(a_links)):
+
+            if len(str(a_links[i].get_attribute("href"))) > len(base_url) + 1:
+
+                if a_links[i].get_attribute("href") in links_to_write:
+                    continue
+
+                links_to_write.append(str(a_links[i].get_attribute("href")))
+
+            if len(links_to_write) == amount:
                 self.walk_inside(links_to_write)
+                self.write_to_file(links_to_write)
                 break
+
         print("The amount of links is " + str(len(links_to_write)))
-        driver.close()
 
     def walk_inside(self,links_array):
-        print(links_array)
-        pass
+        driver = self.driver
 
-    def write_to_file(self):
+        for link in links_array:
+            driver.get(link)
+            # здесь прокрутка страницы
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(30)
+            print(link)
+
+        driver.close()
+
+    def write_to_file(self,links_array):
         # открыть файл и построчно добавлять новые линки после "прогулки"
         pass
 
 
 sw = SeoWalker()
-sw.walk("https://www.stranamam.ru", 5)
+sw.walk("https://www.stranamam.ru/", 8)
+
 
