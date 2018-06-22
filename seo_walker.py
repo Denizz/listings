@@ -16,22 +16,22 @@ class SeoWalker():
         self.driver.maximize_window()
         self.driver.get(base_url)
         self.driver.implicitly_wait(10)
-        a_links = self.driver.find_elements_by_xpath("//a[contains(@href,'"+url+"')] ")
+
+        a_links = self.driver.find_elements_by_xpath("//a[contains(@href,'"+url+"') or starts-with(@href, '/') and not(contains(@href, 'out'))]") #
+
         links_to_write = []
 
         for i in range (0, len(a_links)):
 
             if len(str(a_links[i].get_attribute("href"))) > len(base_url) + 1:
-
-                if a_links[i].get_attribute("href") in links_to_write:
-                    continue
-
-                links_to_write.append(str(a_links[i].get_attribute("href")))
+                if a_links[i].get_attribute("href") not in links_to_write:
+                    links_to_write.append(str(a_links[i].get_attribute("href")))
 
             if len(links_to_write) == amount:
                 self.walk_inside(links_to_write)
                 self.write_to_file(links_to_write)
                 break
+
 
         print("The amount of links is " + str(len(links_to_write)))
 
@@ -53,6 +53,8 @@ class SeoWalker():
 
 
 sw = SeoWalker()
-sw.walk("https://www.stranamam.ru/", 8)
+sw.walk("https://erort.ru/2018/06/", 10)# если ссылки не находятся делаем переход с "карты сайта" или "архива"
 
-
+#TODO добавить обработку относительных ссылок
+#TODO добавить возможность перехода/поиска с яндекса
+#TODO возможность поиска ссылки внутри сайта и переход на нее
