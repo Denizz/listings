@@ -19,15 +19,25 @@ class YandexSearcher():
         self.driver.implicitly_wait(10)
         print(" opened")
 
-        self.search_name_parts(np1)
+        self.search_name_parts(np1, 1)
 
-    def search_name_parts(self, np1):
+    def search_name_parts(self, np1, page):
+
         driver = self.driver
-        url_tmp = []
+        driver.find_elements_by_xpath("//a[starts-with(@class, 'link link_ajax_yes link_theme_normal pager__item pager_')]")[page - 1].click()
+
+        print("Page number " + str(page) + "clicked!")
+
         time.sleep(10)
         links = driver.find_elements_by_xpath("//a[starts-with(@class, 'link link_outer_yes')]")
+        self.get_link(links, np1, page)
 
-        for i in range(0,len(links)):
+
+
+    def get_link(self, links, np1, page):
+        url_tmp = []
+
+        for i in range(0, len(links)):
             if re.search(np1, links[i].get_attribute("href")):
                 url_tmp.append(links[i].get_attribute("href"))
                 self.walk_in_page(links[i].get_attribute("href"))
@@ -35,6 +45,13 @@ class YandexSearcher():
 
             else:
                 print(links[i].get_attribute("href"))
+
+        if len(url_tmp) == 0:
+            page += 1
+            self.search_name_parts(np1, page)
+
+
+
 
     def walk_in_page(self, url):
         driver = self.driver
@@ -44,4 +61,4 @@ class YandexSearcher():
 
 
 ns = YandexSearcher()
-ns.search( "Поразительный дизайн​", r"di(.*)om.ru") #(.*) вместо неизвестных символов
+ns.search( "курсы кройки и шитья", r"a-p(.*).ru") #(.*) вместо неизвестных символов
