@@ -2,8 +2,10 @@ from selenium import webdriver
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from seo_walker import SeoWalker
 import time
 import re
+
 
 
 class YandexSearcher():
@@ -57,8 +59,10 @@ class YandexSearcher():
         driver = self.driver
         driver.get(url)
         print("I am inside of!" + url)
+        sw = SeoWalker()
+        sw.walk(url, 10)
         driver.close()
 
 
 ns = YandexSearcher()
-ns.search( "курсы кройки и шитья", r"a-p(.*).ru") #(.*) вместо неизвестных символов
+ns.search( "страна мам", r"blog.tr(.*)d.ru") #(.*) вместо неизвестных символов
