@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import ttk
+from tkinter import Tk, ttk, StringVar
 
 
 class Gui():
@@ -16,16 +16,6 @@ class Gui():
 
         self.result_text.insert(END, s)
         return
-
-    def change(self, event, widget, widget_gui, widget_lbl, is_ads):
-
-        x = is_ads.get()
-        if x == 1:
-            widget_gui.configure(state=NORMAL)
-            widget_lbl.configure(state=NORMAL)
-        else:
-            widget_gui.configure(state=DISABLED)
-            widget_lbl.configure(state=DISABLED)
 
     def __init__(self):
         self.win = Tk()
@@ -60,7 +50,7 @@ class Gui():
         tab2_frame4 = Frame(search_walk)
         tab2_frame4.pack(side='top')
 
-#__________________TAB1______________________________________________#
+#############################TAB1##############################################
 
     #поле ввода адреса сайта
         webaddress = Entry(tab1_frame1, width=30, font="Courier 16")
@@ -79,19 +69,12 @@ class Gui():
         font="Courier 14")
         lbl_ent1.pack(side='left')
 
-    #клики по рекламе1
-        is_ads1 = IntVar()
-        self.check1 = Checkbutton(tab1_frame3, text=u'Кликнуть по рекламе',
-        variable=is_ads1, font="Courier 14", command=lambda:
-        self.change(self, self.check1, ads_amount1, lbl_ads1, is_ads1))
-        self.check1.pack(side="left")
-
     #количество переходов по рекламе 1
         ads_amount1 = Entry(tab1_frame3, width=2, font="Courier 14",
-        state=DISABLED)
+        state=NORMAL)
         ads_amount1.pack(side='left')
         lbl_ads1 = Label(tab1_frame3, text="Количество переходов по рекламе",
-        font="Courier 12", state=DISABLED)
+        font="Courier 12", state=NORMAL)
         lbl_ads1.pack(side='left')
 
     #кнопка выполнить 1
@@ -100,7 +83,7 @@ class Gui():
         font="Courier 16")
         start_button1.pack(side='bottom', padx=10, pady=10, fill=X)
 
-#__________________TAB2______________________________________________#
+############################TAB2###############################################
 
     #поле ввода количества ссылок 2
         links_amount2 = StringVar()
@@ -113,11 +96,12 @@ class Gui():
 
     #select список
         searcher = StringVar()
-        searcher_chosen = ttk.Combobox(tab2_frame1, textvariable=searcher,
+        keepvalue = searcher.get()
+        self.searcher_chosen = ttk.Combobox(tab2_frame1, textvariable=keepvalue,
         font="Courier 16", state='readonly')
-        searcher_chosen['values'] = ("Yandex", "Google")
-        searcher_chosen.current(0)
-        searcher_chosen.pack(side="left")
+        self.searcher_chosen['values'] = ("Yandex", "Google")
+        self.searcher_chosen.current(0)
+        self.searcher_chosen.pack(side="left")
 
     #фраза для поиска
         phrase = Entry(tab2_frame1, width=30, font="Courier 14")
@@ -133,20 +117,13 @@ class Gui():
         font="Courier 14")
         lbl_tmp_address.pack(side="left")
 
-    #клики по рекламе2
-        is_ads2 = IntVar()
-        self.check2 = Checkbutton(tab2_frame4, text=u'Кликнуть по рекламе',
-        onvalue=1, offvalue=0, font="Courier 14", variable=is_ads2,
-        command=lambda: self.change(self, self.check2, ads_amount2, lbl_ads2,
-        is_ads2))
-        self.check2.pack(side='left', padx=10, pady=10, fill=X)
 
     #количество переходов по рекламе 2
         ads_amount2 = Entry(tab2_frame4, width=2, font="Courier 16",
-        state=DISABLED)
+        state=NORMAL)
         ads_amount2.pack(side="left")
         lbl_ads2 = Label(tab2_frame4, text="Количество переходов по рекламе",
-        font="Courier 14", state=DISABLED)
+        font="Courier 14", state=NORMAL)
         lbl_ads2.pack(side="left")
 
     #кнопка выполнить 2
@@ -155,7 +132,7 @@ class Gui():
         font="Courier 16")
         start_button2.pack(side='bottom', padx=10, pady=10, fill=X)
 
-#_________________________TABS END_______________________________#
+#################################TABS END#####################################
 
     #textarea для результата
         self.result_text = Text(self.win, height=20, width=100)
@@ -164,5 +141,6 @@ class Gui():
 
 if __name__ == "__main__":
     gui = Gui()
+    gui.result_text.insert(END, "Here we go...")
     gui.win.mainloop()
 
